@@ -22,7 +22,7 @@
 </select>
 </p>
 <p style="position:absolute;top:16%;left:65%;width:50%;font-size:200%;color:white";>
-<a href="https://chartbeat.com/publishing/settings/api-keys/"> Enter your API Key:</a>
+<a href="https://www.google.com"> Enter your API Key:</a>
 </p>
 
 
@@ -45,6 +45,16 @@ Quick Queries v 1.0
 </p>
 
 <script>
+
+
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
 function othername()
 {
 //var input = document.getElementById("userEmail").value;
@@ -63,18 +73,41 @@ if (inputf == "day" & inputr == "author"){
    var cmon = convert.toISOString().slice(0,10)
 
 
+var result = httpGet("http://api.chartbeat.com/query/v2/submit/page/?host=" + input3 + "&apikey=" + input2 + "&start=" + cmon + "&end=" + d + "&metrics=page_views&dimensions=" + inputr);
 
-window.location = "http://api.chartbeat.com/query/v2/submit/page/?host=" + input3 + "&apikey=" + input2 + "&start=" + cmon + "&end=" + d + "&metrics=page_views&dimensions=" + inputr
+console.log(result);
+
+var obj = JSON.parse(result);
+
+console.log(obj.query_id);
+
+window.location = "http://api.chartbeat.com/query/v2/fetch/?host=" + input3 + "&apikey=" + input2 + "&query_id=" + obj.query_id;
 }
 else if (inputf == "week" & inputr == "author"){
 convert.setDate(convert.getDate()-7)
  var cmon = convert.toISOString().slice(0,10)
-window.location = "http://api.chartbeat.com/query/v2/submit/page/?host=" + input3 + "&apikey=" + input2 + "&start=" + cmon + "&end=" + d + "&metrics=page_views&dimensions=" + inputr
+ var result = httpGet("http://api.chartbeat.com/query/v2/submit/page/?host=" + input3 + "&apikey=" + input2 + "&start=" + cmon + "&end=" + d + "&metrics=page_views&dimensions=" + inputr);
+
+ console.log(result);
+
+ var obj = JSON.parse(result);
+
+ console.log(obj.query_id);
+
+ window.location = "http://api.chartbeat.com/query/v2/fetch/?host=" + input3 + "&apikey=" + input2 + "&query_id=" + obj.query_id;
 }
 else{
 convert.setDate(convert.getDate()-30)
 var cmon = convert.toISOString().slice(0,10)
-window.location = "http://api.chartbeat.com/query/v2/submit/page/?host=" + input3 + "&apikey=" + input2 + "&start=" + cmon + "&end=" + d + "&metrics=page_views&dimensions=" + inputr
+var result = httpGet("http://api.chartbeat.com/query/v2/submit/page/?host=" + input3 + "&apikey=" + input2 + "&start=" + cmon + "&end=" + d + "&metrics=page_views&dimensions=" + inputr);
+
+console.log(result);
+
+var obj = JSON.parse(result);
+
+console.log(obj.query_id);
+
+window.location = "http://api.chartbeat.com/query/v2/fetch/?host=" + input3 + "&apikey=" + input2 + "&query_id=" + obj.query_id;
 }
 }
 
