@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+
+  <img src="logo2.png" style="position:fixed left:0px">
+
+  <!--RADIO 1-->
+ <input type="radio" class="radio_item" value="" name="item" id="radio1">
+     <label class="label_item" for="radio1"> <img src="TopAuth1.jpg"> </label>
+ <!--RADIO 2-->
+ <input type="radio" class="radio_item" value="" name="item" id="radio2">
+ <label class="label_item" for="radio2"> <img src="MostPV1.jpg"> </label>
+
+
+<label>
+<img src="TopAuth1.jpg" style="position:fixed; left:50px; top:200px; border:5px solid black";
+input type="radio" name="Report" value="author"
+  onmouseover="this.src='TopAuth2.jpg';"
+         onmouseout="this.src='TopAuth1.jpg';"
+         onclick="this.onmouseover=null; this.onmouseout=null;">
+       </label>
+       <label>
+<img src="MostPV1.jpg" style="position:fixed; left:50px; top:305px; border:5px solid black";
+  input type="radio" name="Report" value="page_views"
+          onmouseover="this.src='MostPV2.jpg';"
+                onmouseout="this.src='MostPV1.jpg';"
+               onclick=alert(Report.value)>
+</label>
+                <input type="image" src="Bestref1.jpg" class="btTxt submit" id="Report" style="position:fixed; left:50px; top:410px; border:5px solid black;"
+                 onmouseover="this.src='Bestref2.jpg';"
+                        onmouseout="this.src='Bestref1.jpg';">
+                        <input type="image" src="yest1.jpg" class="btTxt submit" id="Frequency" value="day" style="position:fixed; left:850px; top:200px; border:5px solid black;"
+                        onmouseover="this.src='yest2.jpg';"
+                               onmouseout="this.src='yest1.jpg';">
+                              <input type="image" src="lw1.jpg" class="btTxt submit" id="Frequency" value="week" style="position:fixed; left:850px; top:305px; border:5px solid black;"
+                               onmouseover="this.src='lw2.jpg';"
+                                      onmouseout="this.src='lw1.jpg';">
+                                      <input type="image" src="lm1.jpg" class="btTxt submit" id="Frequency" value="month" style="position:fixed; left:850px; top:410px; border:5px solid black;"
+                                       onmouseover="this.src='lm2.jpg';"
+                                              onmouseout="this.src='lm1.jpg';">
+
+
+
+<p style="position:absolute;top:16%;left:5%;width:50%;font-size:200%;color:white">
+<h>Choose a Report:</h>
+</p>
+<body bgcolor="#143250">
+</body>
+<p style="position:absolute;top:25%;left:5%;">
+<select id="Report">
+  <option value="author">Top Authors</option>
+  <option value="Top Pageviews">Top Pageviews</option>
+  <option value="Top Engaged Time">Top Engaged Time</option>
+  <option value="Top Section">Top Section</option>
+</p>
+</select>
+<p style="position:absolute;top:30%;left:5%;">
+<select id="Frequency">
+  <option value="day">Yesterday</option>
+  <option value="week">Past Week</option>
+  <option value="month">Past Month</option>
+</select>
+</p>
+<p style="position:fixed;top:350px;left:525px;width:300px;font-size:200%;color:white";>
+Enter your API Key:
+</p>
+
+
+<form id="form" onsubmit="return false;">
+<input   style=position:fixed;top:450px;left:550px;width:200px; type="text" id="userApi">
+<input   style=position:fixed;top:550px;left:550px;width:200px; type="submit"    onclick="othername()">
+</form>
+
+<p style="position:fixed;top:200px;left:535px;width:300px;font-size:200%;color:white";>
+Domain / Website:
+</p>
+
+
+<form id="form" onsubmit="return false;">
+<input   style=position:fixed;top:295px;left:505px;width:300px; type="text" id="domain">
+</form>
+
+<p style="position:fixed;top:0px;left:460px;width:600px;font-size:400%;color:white";>
+Quick Queries
+</p>
+
+<script>
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+function othername()
+{
+//var input = document.getElementById("userEmail").value;
+var input2 = document.getElementById("userApi").value;
+var input3 = document.getElementById("domain").value;
+var inputr = document.getElementById("Report").value;
+var inputf = document.getElementById("Frequency").value;
+var d = new Date().toISOString().slice(0,10);
+var convert = new Date();
+//alert(inputf);
+if (inputf == "day" & inputr == "author"){
+   convert.setDate(convert.getDate()-1)
+   var cmon = convert.toISOString().slice(0,10)
+var result = httpGet("http://api.chartbeat.com/query/v2/submit/page/?host=" + input3 + "&apikey=" + input2 + "&start=" + cmon + "&end=" + d + "&metrics=page_views&dimensions=" + inputr);
+console.log(result);
+var obj = JSON.parse(result);
+console.log(obj.query_id);
+window.location = "http://api.chartbeat.com/query/v2/fetch/?host=" + input3 + "&apikey=" + input2 + "&query_id=" + obj.query_id;
+}
+else if (inputf == "week" & inputr == "author"){
+convert.setDate(convert.getDate()-7)
+ var cmon = convert.toISOString().slice(0,10)
+ var result = httpGet("http://api.chartbeat.com/query/v2/submit/page/?host=" + input3 + "&apikey=" + input2 + "&start=" + cmon + "&end=" + d + "&metrics=page_views&dimensions=" + inputr);
+ console.log(result);
+ var obj = JSON.parse(result);
+ console.log(obj.query_id);
+ window.location = "http://api.chartbeat.com/query/v2/fetch/?host=" + input3 + "&apikey=" + input2 + "&query_id=" + obj.query_id;
+}
+else if (inputf == "month" & inputr == "author"){
+convert.setDate(convert.getDate()-30)
+var cmon = convert.toISOString().slice(0,10)
+var result = httpGet("http://api.chartbeat.com/query/v2/submit/page/?host=" + input3 + "&apikey=" + input2 + "&start=" + cmon + "&end=" + d + "&metrics=page_views&dimensions=" + inputr);
+console.log(result);
+var obj = JSON.parse(result);
+console.log(obj.query_id);
+window.location = "http://api.chartbeat.com/query/v2/fetch/?host=" + input3 + "&apikey=" + input2 + "&query_id=" + obj.query_id;
+}
+else if (inputf == "day" & inputr == "author"){
+   convert.setDate(convert.getDate()-1)
+   var cmon = convert.toISOString().slice(0,10)
+var result = httpGet("http://api.chartbeat.com/query/v2/submit/page/?host=" + input3 + "&apikey=" + input2 + "&start=" + cmon + "&end=" + d + "&metrics=page_views&dimensions=" + inputr);
+console.log(result);
+var obj = JSON.parse(result);
+console.log(obj.query_id);
+window.location = "http://api.chartbeat.com/query/v2/fetch/?host=" + input3 + "&apikey=" + input2 + "&query_id=" + obj.query_id;
+}
+else if (inputf == "week" & inputr == "author"){
+convert.setDate(convert.getDate()-7)
+ var cmon = convert.toISOString().slice(0,10)
+ var result = httpGet("http://api.chartbeat.com/query/v2/submit/page/?host=" + input3 + "&apikey=" + input2 + "&start=" + cmon + "&end=" + d + "&metrics=page_views&dimensions=" + inputr);
+ console.log(result);
+ var obj = JSON.parse(result);
+ console.log(obj.query_id);
+ window.location = "http://api.chartbeat.com/query/v2/fetch/?host=" + input3 + "&apikey=" + input2 + "&query_id=" + obj.query_id;
+}
+else if (inputf == "month" & inputr == "author"){
+convert.setDate(convert.getDate()-30)
+var cmon = convert.toISOString().slice(0,10)
+var result = httpGet("http://api.chartbeat.com/query/v2/submit/page/?host=" + input3 + "&apikey=" + input2 + "&start=" + cmon + "&end=" + d + "&metrics=page_views&dimensions=" + inputr);
+console.log(result);
+var obj = JSON.parse(result);
+console.log(obj.query_id);
+window.location = "http://api.chartbeat.com/query/v2/fetch/?host=" + input3 + "&apikey=" + input2 + "&query_id=" + obj.query_id;
+}
+}
+//http://api.chartbeat.com/query/v2/fetch/?host={host}&apikey={apikey}&query_id={query_id}
+</script>
+</body>
+</html>
